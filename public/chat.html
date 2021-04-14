@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat App</title>
+    <link rel="icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+
+    <div class="chat">
+        <div id="sidebar" class="chat__sidebar">
+            
+        </div>
+        <div class="chat__main">
+            <nav class="navbar navbar-expand-lg navbar-dark">
+
+            </nav>
+            <div id="messages" class="chat__messages" onclick="hideEmojiPanel()">
+
+            </div>
+            <div style="position: relative;">
+                <div class="col-md-6" id="emoji" style="display: none;">
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                          <button class="nav-link active" id="smiley" data-bs-toggle="tab" data-bs-target="#hom
+                          e" type="button" role="tab" aria-controls="home" aria-selected="true"><i class="fa fa-smile-o"></i></button>
+                        </li>
+                    </ul>
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="smiley" role="tabpanel" aria-labelledby="home-tab">
+                        <a href="#" onclick="getEmoji(this)"></a>
+                    </div>
+                </div>
+            </div>
+            <div class="compose">
+                <form id="message-form">
+                    <i class="fa fa-smile-o fa-2x emoji" onclick="showEmojiPanel()" ondblclick="hideEmojiPanel()"></i>
+                    <input class="input" type="text" id="message" name="message" onfocus="hideEmojiPanel()" placeholder="Message" required autocomplete="off">
+                    <button class="button"><i class="fa fa-send fa-2x" aria-hidden="true"></i></button>
+                </form>
+            </div>
+            
+        </div>
+    </div>
+
+    
+
+    <script id="message-template" type="text/html">
+        <div class="message">
+            <p>
+                <span class="message__name">{{username}}</span>
+                <span class="message__meta">{{createdAt}}</span>
+            </p>
+            <p class="message_msg">{{message}}</p>
+        </div>
+    </script>
+
+    <script id="sidebar-template" type="text/html">
+        <h1 class="room-title"><img src="/img/member.png" height="25px" width="25px"> {{username}} </h1>
+        <h1 class="list-title">Room Name: {{room}} </h1>
+        <hr>
+        <h2 class="list-title"> Members:</h2>
+        <ul class="users">
+            {{#users}}
+                <li class="userlist">{{username}}</li>
+            {{/users}}
+        </ul>
+    </script>
+
+    <script>
+
+        loadAllEmoji();
+
+        function loadAllEmoji() {
+            var emoji = "";
+            for (var i= 128512; i<= 128566; i++) {
+                emoji += ' <a style="font-size: 20px" onclick="getEmoji(this)">&#'+ i+';</a> ';
+            }
+
+            document.getElementById("myTabContent").innerHTML = emoji;
+        }
+
+        function showEmojiPanel() {
+            document.getElementById("emoji").removeAttribute("style");
+        }
+
+        function hideEmojiPanel() {
+            document.getElementById("emoji").setAttribute("style","display: none");
+        }
+
+        function getEmoji(control) {
+            document.getElementById("message").value += control.innerHTML;
+        }
+    </script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/3.0.1/mustache.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.6.0/qs.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/chat.js"></script>
+</body>
+</html>
